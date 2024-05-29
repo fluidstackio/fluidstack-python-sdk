@@ -1,5 +1,6 @@
 # FluidStack Python Library
 
+[![pypi](https://img.shields.io/pypi/v/fluidstack.svg)](https://pypi.python.org/pypi/fluidstack)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
 The FluidStack Python Library provides convenient access to the FluidStack API from
