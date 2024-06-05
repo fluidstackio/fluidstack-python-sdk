@@ -5,23 +5,15 @@ import typing
 
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .entity_id import EntityId
+from .gpu_type import GpuType
 from .supported_operating_system import SupportedOperatingSystem
 
 
-class OperatingSystemResponse(pydantic_v1.BaseModel):
-    id: EntityId = pydantic_v1.Field()
-    """
-    The ID of the operating system.
-    """
-
-    name: str = pydantic_v1.Field()
-    """
-    The name of the operating system.
-    """
-
-    description: typing.Optional[str] = None
-    label: SupportedOperatingSystem
+class CreateInstanceResponse(pydantic_v1.BaseModel):
+    id: str
+    name: str
+    gpu_type: GpuType
+    operating_system_label: SupportedOperatingSystem
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

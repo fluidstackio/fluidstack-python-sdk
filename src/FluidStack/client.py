@@ -5,15 +5,11 @@ import typing
 
 import httpx
 
-from .api_keys.client import ApiKeysClient, AsyncApiKeysClient
-from .auth.client import AsyncAuthClient, AuthClient
+from .configurations.client import AsyncConfigurationsClient, ConfigurationsClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .instances.client import AsyncInstancesClient, InstancesClient
-from .payments.client import AsyncPaymentsClient, PaymentsClient
-from .plans.client import AsyncPlansClient, PlansClient
 from .ssh_keys.client import AsyncSshKeysClient, SshKeysClient
 from .templates.client import AsyncTemplatesClient, TemplatesClient
-from .user.client import AsyncUserClient, UserClient
 
 
 class FluidStack:
@@ -37,7 +33,7 @@ class FluidStack:
 
     Examples
     --------
-    from fluidstack.client import FluidStack
+    from FluidStack.client import FluidStack
 
     client = FluidStack(
         api_key="YOUR_API_KEY",
@@ -65,14 +61,10 @@ class FluidStack:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.auth = AuthClient(client_wrapper=self._client_wrapper)
         self.instances = InstancesClient(client_wrapper=self._client_wrapper)
         self.ssh_keys = SshKeysClient(client_wrapper=self._client_wrapper)
-        self.api_keys = ApiKeysClient(client_wrapper=self._client_wrapper)
-        self.plans = PlansClient(client_wrapper=self._client_wrapper)
-        self.user = UserClient(client_wrapper=self._client_wrapper)
+        self.configurations = ConfigurationsClient(client_wrapper=self._client_wrapper)
         self.templates = TemplatesClient(client_wrapper=self._client_wrapper)
-        self.payments = PaymentsClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncFluidStack:
@@ -96,7 +88,7 @@ class AsyncFluidStack:
 
     Examples
     --------
-    from fluidstack.client import AsyncFluidStack
+    from FluidStack.client import AsyncFluidStack
 
     client = AsyncFluidStack(
         api_key="YOUR_API_KEY",
@@ -124,11 +116,7 @@ class AsyncFluidStack:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.auth = AsyncAuthClient(client_wrapper=self._client_wrapper)
         self.instances = AsyncInstancesClient(client_wrapper=self._client_wrapper)
         self.ssh_keys = AsyncSshKeysClient(client_wrapper=self._client_wrapper)
-        self.api_keys = AsyncApiKeysClient(client_wrapper=self._client_wrapper)
-        self.plans = AsyncPlansClient(client_wrapper=self._client_wrapper)
-        self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
+        self.configurations = AsyncConfigurationsClient(client_wrapper=self._client_wrapper)
         self.templates = AsyncTemplatesClient(client_wrapper=self._client_wrapper)
-        self.payments = AsyncPaymentsClient(client_wrapper=self._client_wrapper)

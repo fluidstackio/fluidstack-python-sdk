@@ -5,32 +5,39 @@ import typing
 
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .entity_id import EntityId
-from .volume_status import VolumeStatus
+from .configuration_response import ConfigurationResponse
+from .instance_status import InstanceStatus
+from .instance_term import InstanceTerm
+from .operating_system_response import OperatingSystemResponse
+from .region_response import RegionResponse
+from .ssh_key_response import SshKeyResponse
 
 
-class VolumeResponse(pydantic_v1.BaseModel):
-    id: EntityId = pydantic_v1.Field()
+class ListInstanceResponse(pydantic_v1.BaseModel):
+    id: str = pydantic_v1.Field()
     """
-    The ID of the volume
-    """
-
-    name: str = pydantic_v1.Field()
-    """
-    The name of the volume.
+    The unique identifier of the instance.
     """
 
-    size_gb: int = pydantic_v1.Field()
+    status: typing.Optional[InstanceStatus] = pydantic_v1.Field(default=None)
     """
-    The size of the volume in GB.
-    """
-
-    status: typing.Optional[VolumeStatus] = None
-    current_rate: float = pydantic_v1.Field()
-    """
-    The current hourly rate of the volume.
+    The current status of the instance.
     """
 
+    username: typing.Optional[str] = None
+    ssh_port: typing.Optional[str] = None
+    ssh_keys: typing.Optional[typing.List[SshKeyResponse]] = None
+    ip_address: typing.Optional[str] = None
+    name: typing.Optional[str] = None
+    term: typing.Optional[InstanceTerm] = pydantic_v1.Field(default=None)
+    """
+    The commitment term of the instance.
+    """
+
+    current_rate: typing.Optional[float] = None
+    configuration: typing.Optional[ConfigurationResponse] = None
+    region: typing.Optional[RegionResponse] = None
+    operating_system: typing.Optional[OperatingSystemResponse] = None
     created_at: typing.Optional[dt.datetime] = None
 
     def json(self, **kwargs: typing.Any) -> str:

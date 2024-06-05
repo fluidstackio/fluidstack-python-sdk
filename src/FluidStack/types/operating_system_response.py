@@ -5,10 +5,20 @@ import typing
 
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .supported_operating_system import SupportedOperatingSystem
 
 
-class CreatePaymentResponse(pydantic_v1.BaseModel):
-    client_secret: typing.Optional[str] = None
+class OperatingSystemResponse(pydantic_v1.BaseModel):
+    name: str = pydantic_v1.Field()
+    """
+    The friendly name of the operating system.
+    """
+
+    description: typing.Optional[str] = None
+    label: SupportedOperatingSystem = pydantic_v1.Field()
+    """
+    The unique slug identifier of the operating system.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -14,6 +14,7 @@ from ..core.request_options import RequestOptions
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.create_instance_response import CreateInstanceResponse
+from ..types.gpu_type import GpuType
 from ..types.http_validation_error import HttpValidationError
 from ..types.list_instance_response import ListInstanceResponse
 from ..types.message import Message
@@ -29,7 +30,7 @@ class InstancesClient:
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[ListInstanceResponse]:
         """
-        List user instances.
+        This endpoint is used to retrieve a list of all instances associated with the authenticated user.
 
         Parameters
         ----------
@@ -43,7 +44,7 @@ class InstancesClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -91,27 +92,30 @@ class InstancesClient:
         self,
         *,
         name: str,
-        configuration_id: str,
-        ssh_keys: typing.Optional[typing.Sequence[str]] = OMIT,
+        gpu_type: GpuType,
+        ssh_keys: typing.Sequence[str],
+        gpu_count: typing.Optional[int] = OMIT,
         operating_system_label: typing.Optional[SupportedOperatingSystem] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateInstanceResponse:
         """
-        Create a new instance.
+        This endpoint is used to create a new instance. You must provide a name, gpu_type and a list of ssh_key ids. The default GPU count is 1.
 
         Parameters
         ----------
         name : str
             A custom name of the instance.
 
-        configuration_id : str
-            The configuration id of the instance.
+        gpu_type : GpuType
 
-        ssh_keys : typing.Optional[typing.Sequence[str]]
-            The list of ssh key ids to be added to the instance.
+        ssh_keys : typing.Sequence[str]
+            The list of SSH key IDs to add to the instance. These SSH keys will be used to connect to the instance.
+
+        gpu_count : typing.Optional[int]
+            The number of GPUs to attach to the instance.
 
         operating_system_label : typing.Optional[SupportedOperatingSystem]
-            The operating_system_label of the instance.
+            The operating system label to be used to create the instance.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -123,7 +127,7 @@ class InstancesClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -131,12 +135,13 @@ class InstancesClient:
         )
         client.instances.create(
             name="name",
-            configuration_id="configuration_id",
+            gpu_type="RTX_A4000_16GB",
+            ssh_keys=["ssh_keys"],
         )
         """
-        _request: typing.Dict[str, typing.Any] = {"name": name, "configuration_id": configuration_id}
-        if ssh_keys is not OMIT:
-            _request["ssh_keys"] = ssh_keys
+        _request: typing.Dict[str, typing.Any] = {"name": name, "gpu_type": gpu_type, "ssh_keys": ssh_keys}
+        if gpu_count is not OMIT:
+            _request["gpu_count"] = gpu_count
         if operating_system_label is not OMIT:
             _request["operating_system_label"] = operating_system_label
         _response = self._client_wrapper.httpx_client.request(
@@ -183,7 +188,7 @@ class InstancesClient:
 
     def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Terminate a instance.
+        This endpoint can be used to terminate an existing instance by its ID.
 
         Parameters
         ----------
@@ -198,7 +203,7 @@ class InstancesClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -258,7 +263,7 @@ class AsyncInstancesClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> typing.List[ListInstanceResponse]:
         """
-        List user instances.
+        This endpoint is used to retrieve a list of all instances associated with the authenticated user.
 
         Parameters
         ----------
@@ -272,7 +277,7 @@ class AsyncInstancesClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
@@ -320,27 +325,30 @@ class AsyncInstancesClient:
         self,
         *,
         name: str,
-        configuration_id: str,
-        ssh_keys: typing.Optional[typing.Sequence[str]] = OMIT,
+        gpu_type: GpuType,
+        ssh_keys: typing.Sequence[str],
+        gpu_count: typing.Optional[int] = OMIT,
         operating_system_label: typing.Optional[SupportedOperatingSystem] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateInstanceResponse:
         """
-        Create a new instance.
+        This endpoint is used to create a new instance. You must provide a name, gpu_type and a list of ssh_key ids. The default GPU count is 1.
 
         Parameters
         ----------
         name : str
             A custom name of the instance.
 
-        configuration_id : str
-            The configuration id of the instance.
+        gpu_type : GpuType
 
-        ssh_keys : typing.Optional[typing.Sequence[str]]
-            The list of ssh key ids to be added to the instance.
+        ssh_keys : typing.Sequence[str]
+            The list of SSH key IDs to add to the instance. These SSH keys will be used to connect to the instance.
+
+        gpu_count : typing.Optional[int]
+            The number of GPUs to attach to the instance.
 
         operating_system_label : typing.Optional[SupportedOperatingSystem]
-            The operating_system_label of the instance.
+            The operating system label to be used to create the instance.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -352,7 +360,7 @@ class AsyncInstancesClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
@@ -360,12 +368,13 @@ class AsyncInstancesClient:
         )
         await client.instances.create(
             name="name",
-            configuration_id="configuration_id",
+            gpu_type="RTX_A4000_16GB",
+            ssh_keys=["ssh_keys"],
         )
         """
-        _request: typing.Dict[str, typing.Any] = {"name": name, "configuration_id": configuration_id}
-        if ssh_keys is not OMIT:
-            _request["ssh_keys"] = ssh_keys
+        _request: typing.Dict[str, typing.Any] = {"name": name, "gpu_type": gpu_type, "ssh_keys": ssh_keys}
+        if gpu_count is not OMIT:
+            _request["gpu_count"] = gpu_count
         if operating_system_label is not OMIT:
             _request["operating_system_label"] = operating_system_label
         _response = await self._client_wrapper.httpx_client.request(
@@ -412,7 +421,7 @@ class AsyncInstancesClient:
 
     async def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Terminate a instance.
+        This endpoint can be used to terminate an existing instance by its ID.
 
         Parameters
         ----------
@@ -427,7 +436,7 @@ class AsyncInstancesClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",

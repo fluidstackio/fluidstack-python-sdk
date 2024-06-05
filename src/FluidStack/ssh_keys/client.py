@@ -27,7 +27,7 @@ class SshKeysClient:
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[SshKeyResponse]:
         """
-        List user ssh keys.
+        Fetch a list of SSH keys associated with the authenticated user.
 
         Parameters
         ----------
@@ -41,7 +41,7 @@ class SshKeysClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -89,7 +89,7 @@ class SshKeysClient:
         self, *, name: str, public_key: str, request_options: typing.Optional[RequestOptions] = None
     ) -> SshKeyResponse:
         """
-        Create a new ssh key.
+        Create a new SSH Key for the authenticated user. A unique name must be provided for the SSH key and a public key. The public key must be a valid SSH key with supported formats ssh-rsa, ssh-dss (DSA), ssh-ed25519 and ecdsa keys with NIST curves.
 
         Parameters
         ----------
@@ -109,7 +109,7 @@ class SshKeysClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -120,7 +120,6 @@ class SshKeysClient:
             public_key="public_key",
         )
         """
-        _request: typing.Dict[str, typing.Any] = {"name": name, "public_key": public_key}
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ssh_keys"),
@@ -129,10 +128,10 @@ class SshKeysClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder(_request)
+            json=jsonable_encoder({"name": name, "public_key": public_key})
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(_request),
+                **jsonable_encoder({"name": name, "public_key": public_key}),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -165,7 +164,7 @@ class SshKeysClient:
 
     def delete(self, ssh_key_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Delete a user ssh key.
+        Delete an existing SSH key using the SSH key ID.
 
         Parameters
         ----------
@@ -180,7 +179,7 @@ class SshKeysClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -238,7 +237,7 @@ class AsyncSshKeysClient:
 
     async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[SshKeyResponse]:
         """
-        List user ssh keys.
+        Fetch a list of SSH keys associated with the authenticated user.
 
         Parameters
         ----------
@@ -252,7 +251,7 @@ class AsyncSshKeysClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
@@ -300,7 +299,7 @@ class AsyncSshKeysClient:
         self, *, name: str, public_key: str, request_options: typing.Optional[RequestOptions] = None
     ) -> SshKeyResponse:
         """
-        Create a new ssh key.
+        Create a new SSH Key for the authenticated user. A unique name must be provided for the SSH key and a public key. The public key must be a valid SSH key with supported formats ssh-rsa, ssh-dss (DSA), ssh-ed25519 and ecdsa keys with NIST curves.
 
         Parameters
         ----------
@@ -320,7 +319,7 @@ class AsyncSshKeysClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
@@ -331,7 +330,6 @@ class AsyncSshKeysClient:
             public_key="public_key",
         )
         """
-        _request: typing.Dict[str, typing.Any] = {"name": name, "public_key": public_key}
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ssh_keys"),
@@ -340,10 +338,10 @@ class AsyncSshKeysClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder(_request)
+            json=jsonable_encoder({"name": name, "public_key": public_key})
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(_request),
+                **jsonable_encoder({"name": name, "public_key": public_key}),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -376,7 +374,7 @@ class AsyncSshKeysClient:
 
     async def delete(self, ssh_key_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Delete a user ssh key.
+        Delete an existing SSH key using the SSH key ID.
 
         Parameters
         ----------
@@ -391,7 +389,7 @@ class AsyncSshKeysClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",

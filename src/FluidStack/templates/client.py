@@ -24,7 +24,7 @@ class TemplatesClient:
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[OperatingSystemResponse]:
         """
-        List available OS template images.
+        List available OS template images. Use the label to create an instance.
 
         Parameters
         ----------
@@ -38,7 +38,7 @@ class TemplatesClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
@@ -91,7 +91,7 @@ class AsyncTemplatesClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> typing.List[OperatingSystemResponse]:
         """
-        List available OS template images.
+        List available OS template images. Use the label to create an instance.
 
         Parameters
         ----------
@@ -105,7 +105,7 @@ class AsyncTemplatesClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",

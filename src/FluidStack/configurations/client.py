@@ -18,13 +18,13 @@ from ..types.http_validation_error import HttpValidationError
 from ..types.message import Message
 
 
-class PlansClient:
+class ConfigurationsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[ConfigurationResponse]:
         """
-        List available plans/configurations.
+        List available configurations including GPU type, GPU count, RAM size and disk size.
 
         Parameters
         ----------
@@ -38,13 +38,13 @@ class PlansClient:
 
         Examples
         --------
-        from fluidstack.client import FluidStack
+        from FluidStack.client import FluidStack
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.plans.list()
+        client.configurations.list()
         """
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
@@ -83,7 +83,7 @@ class PlansClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncPlansClient:
+class AsyncConfigurationsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -91,7 +91,7 @@ class AsyncPlansClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> typing.List[ConfigurationResponse]:
         """
-        List available plans/configurations.
+        List available configurations including GPU type, GPU count, RAM size and disk size.
 
         Parameters
         ----------
@@ -105,13 +105,13 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from fluidstack.client import AsyncFluidStack
+        from FluidStack.client import AsyncFluidStack
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        await client.plans.list()
+        await client.configurations.list()
         """
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
