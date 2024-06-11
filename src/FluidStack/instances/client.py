@@ -48,7 +48,6 @@ class InstancesClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         client.instances.list()
         """
@@ -131,7 +130,6 @@ class InstancesClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         client.instances.create(
             name="name",
@@ -186,6 +184,74 @@ class InstancesClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def put(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ListInstanceResponse:
+        """
+        This endpoint can be used to start an existing instance by its ID.
+
+        Parameters
+        ----------
+        instance_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListInstanceResponse
+            Successful Response
+
+        Examples
+        --------
+        from FluidStack.client import FluidStack
+
+        client = FluidStack(
+            api_key="YOUR_API_KEY",
+        )
+        client.instances.put(
+            instance_id="instance_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="PUT",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"instances/{jsonable_encoder(instance_id)}/start"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(ListInstanceResponse, _response.json())  # type: ignore
+        if _response.status_code == 401:
+            raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
+        if _response.status_code == 422:
+            raise UnprocessableEntityError(
+                pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         This endpoint can be used to terminate an existing instance by its ID.
@@ -207,7 +273,6 @@ class InstancesClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         client.instances.delete(
             instance_id="instance_id",
@@ -281,7 +346,6 @@ class AsyncInstancesClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         await client.instances.list()
         """
@@ -364,7 +428,6 @@ class AsyncInstancesClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         await client.instances.create(
             name="name",
@@ -419,6 +482,76 @@ class AsyncInstancesClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    async def put(
+        self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListInstanceResponse:
+        """
+        This endpoint can be used to start an existing instance by its ID.
+
+        Parameters
+        ----------
+        instance_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListInstanceResponse
+            Successful Response
+
+        Examples
+        --------
+        from FluidStack.client import AsyncFluidStack
+
+        client = AsyncFluidStack(
+            api_key="YOUR_API_KEY",
+        )
+        await client.instances.put(
+            instance_id="instance_id",
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="PUT",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"instances/{jsonable_encoder(instance_id)}/start"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(ListInstanceResponse, _response.json())  # type: ignore
+        if _response.status_code == 401:
+            raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
+        if _response.status_code == 422:
+            raise UnprocessableEntityError(
+                pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     async def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         This endpoint can be used to terminate an existing instance by its ID.
@@ -440,7 +573,6 @@ class AsyncInstancesClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         await client.instances.delete(
             instance_id="instance_id",

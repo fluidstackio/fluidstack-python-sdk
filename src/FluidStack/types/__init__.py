@@ -8,11 +8,9 @@ from .gpu_type import GpuType
 from .health_check_out_schema import HealthCheckOutSchema
 from .http_validation_error import HttpValidationError
 from .instance_status import InstanceStatus
-from .instance_term import InstanceTerm
 from .list_instance_response import ListInstanceResponse
 from .message import Message
 from .operating_system_response import OperatingSystemResponse
-from .region_response import RegionResponse
 from .ssh_key_response import SshKeyResponse
 from .supported_operating_system import SupportedOperatingSystem
 from .validation_error import ValidationError
@@ -27,11 +25,9 @@ __all__ = [
     "HealthCheckOutSchema",
     "HttpValidationError",
     "InstanceStatus",
-    "InstanceTerm",
     "ListInstanceResponse",
     "Message",
     "OperatingSystemResponse",
-    "RegionResponse",
     "SshKeyResponse",
     "SupportedOperatingSystem",
     "ValidationError",

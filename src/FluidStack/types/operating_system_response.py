@@ -14,7 +14,11 @@ class OperatingSystemResponse(pydantic_v1.BaseModel):
     The friendly name of the operating system.
     """
 
-    description: typing.Optional[str] = None
+    description: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    The description of the operating system detailing the list of pre-installed packages and customisations, if any.
+    """
+
     label: SupportedOperatingSystem = pydantic_v1.Field()
     """
     The unique slug identifier of the operating system.

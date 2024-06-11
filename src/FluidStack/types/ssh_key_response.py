@@ -19,7 +19,10 @@ class SshKeyResponse(pydantic_v1.BaseModel):
     The name of the SSH key.
     """
 
-    public_key: typing.Optional[str] = None
+    public_key: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    The public key.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

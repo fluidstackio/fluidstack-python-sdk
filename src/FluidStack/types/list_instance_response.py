@@ -7,10 +7,6 @@ from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .configuration_response import ConfigurationResponse
 from .instance_status import InstanceStatus
-from .instance_term import InstanceTerm
-from .operating_system_response import OperatingSystemResponse
-from .region_response import RegionResponse
-from .ssh_key_response import SshKeyResponse
 
 
 class ListInstanceResponse(pydantic_v1.BaseModel):
@@ -24,21 +20,45 @@ class ListInstanceResponse(pydantic_v1.BaseModel):
     The current status of the instance.
     """
 
-    username: typing.Optional[str] = None
-    ssh_port: typing.Optional[str] = None
-    ssh_keys: typing.Optional[typing.List[SshKeyResponse]] = None
-    ip_address: typing.Optional[str] = None
-    name: typing.Optional[str] = None
-    term: typing.Optional[InstanceTerm] = pydantic_v1.Field(default=None)
+    username: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    The commitment term of the instance.
+    The username to be used to connect to the instance. For instance, to connect to the instance via SSH use; "ssh <username>@<ip_address> -p <ssh_port>".
     """
 
-    current_rate: typing.Optional[float] = None
-    configuration: typing.Optional[ConfigurationResponse] = None
-    region: typing.Optional[RegionResponse] = None
-    operating_system: typing.Optional[OperatingSystemResponse] = None
-    created_at: typing.Optional[dt.datetime] = None
+    ssh_port: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    The SSH port to be used to connect to the instance.
+    """
+
+    ssh_keys: typing.Optional[typing.List[str]] = pydantic_v1.Field(default=None)
+    """
+    This is the list of the SSH keys of the instance with which you can login.
+    """
+
+    ip_address: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    The IP address of the instance.
+    """
+
+    name: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    The name provided when the instance was created.
+    """
+
+    current_rate: typing.Optional[float] = pydantic_v1.Field(default=None)
+    """
+    The current hourly price of the instance per processor based on its current status.
+    """
+
+    configuration: typing.Optional[ConfigurationResponse] = pydantic_v1.Field(default=None)
+    """
+    The configuration used to create the instance.
+    """
+
+    created_at: typing.Optional[dt.datetime] = pydantic_v1.Field(default=None)
+    """
+    The creation date and time of the instance.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

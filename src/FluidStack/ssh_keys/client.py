@@ -45,7 +45,6 @@ class SshKeysClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         client.ssh_keys.list()
         """
@@ -113,7 +112,6 @@ class SshKeysClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         client.ssh_keys.create(
             name="name",
@@ -162,13 +160,13 @@ class SshKeysClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, ssh_key_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def delete(self, ssh_key_name: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Delete an existing SSH key using the SSH key ID.
+        Delete an existing SSH key using the SSH key name.
 
         Parameters
         ----------
-        ssh_key_id : str
+        ssh_key_name : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -183,16 +181,15 @@ class SshKeysClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         client.ssh_keys.delete(
-            ssh_key_id="ssh_key_id",
+            ssh_key_name="ssh_key_name",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             method="DELETE",
             url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"ssh_keys/{jsonable_encoder(ssh_key_id)}"
+                f"{self._client_wrapper.get_base_url()}/", f"ssh_keys/{jsonable_encoder(ssh_key_name)}"
             ),
             params=encode_query(
                 jsonable_encoder(
@@ -255,7 +252,6 @@ class AsyncSshKeysClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         await client.ssh_keys.list()
         """
@@ -323,7 +319,6 @@ class AsyncSshKeysClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         await client.ssh_keys.create(
             name="name",
@@ -372,13 +367,13 @@ class AsyncSshKeysClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, ssh_key_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def delete(self, ssh_key_name: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Delete an existing SSH key using the SSH key ID.
+        Delete an existing SSH key using the SSH key name.
 
         Parameters
         ----------
-        ssh_key_id : str
+        ssh_key_name : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -393,16 +388,15 @@ class AsyncSshKeysClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
         )
         await client.ssh_keys.delete(
-            ssh_key_id="ssh_key_id",
+            ssh_key_name="ssh_key_name",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
             method="DELETE",
             url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"ssh_keys/{jsonable_encoder(ssh_key_id)}"
+                f"{self._client_wrapper.get_base_url()}/", f"ssh_keys/{jsonable_encoder(ssh_key_name)}"
             ),
             params=encode_query(
                 jsonable_encoder(

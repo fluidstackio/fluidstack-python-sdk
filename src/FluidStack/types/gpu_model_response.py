@@ -13,7 +13,10 @@ class GpuModelResponse(pydantic_v1.BaseModel):
     The FluidStack unique name of the GPU model.
     """
 
-    memory_size_mb: typing.Optional[int] = None
+    memory_size_mb: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Memory capacity of the GPU in megabytes.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

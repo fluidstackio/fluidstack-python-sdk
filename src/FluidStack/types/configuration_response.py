@@ -11,8 +11,16 @@ from .gpu_model_response import GpuModelResponse
 
 class ConfigurationResponse(pydantic_v1.BaseModel):
     id: EntityId
-    gpu_model: typing.Optional[GpuModelResponse] = None
-    cpu_model: typing.Optional[str] = None
+    gpu_model: typing.Optional[GpuModelResponse] = pydantic_v1.Field(default=None)
+    """
+    The GPU model of the configuration.
+    """
+
+    cpu_model: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    The CPU model of the configuration.
+    """
+
     gpu_count: int = pydantic_v1.Field()
     """
     The number of GPUs in the configuration.
