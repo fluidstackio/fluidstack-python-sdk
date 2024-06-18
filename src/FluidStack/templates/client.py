@@ -42,6 +42,7 @@ class TemplatesClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         client.templates.list()
         """
@@ -108,6 +109,7 @@ class AsyncTemplatesClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         await client.templates.list()
         """

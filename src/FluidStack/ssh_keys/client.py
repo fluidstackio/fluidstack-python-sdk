@@ -45,6 +45,7 @@ class SshKeysClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         client.ssh_keys.list()
         """
@@ -88,7 +89,11 @@ class SshKeysClient:
         self, *, name: str, public_key: str, request_options: typing.Optional[RequestOptions] = None
     ) -> SshKeyResponse:
         """
-        Create a new SSH Key for the authenticated user. A unique name must be provided for the SSH key and a public key. The public key must be a valid SSH key with supported formats ssh-rsa, ssh-dss (DSA), ssh-ed25519 and ecdsa keys with NIST curves.
+        Create a new SSH key for the authenticated user.
+
+        You must provide a unique name for the SSH key, along with a public key. The public key you provide will be duplicated on your FluidStack account for use as as an SSH key.
+
+        <Note>Supported public key formats: ssh-rsa, ssh-dss (DSA), ssh-ed25519, ecdsa keys with NIST curves</Note>
 
         Parameters
         ----------
@@ -112,6 +117,7 @@ class SshKeysClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         client.ssh_keys.create(
             name="name",
@@ -181,9 +187,10 @@ class SshKeysClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         client.ssh_keys.delete(
-            ssh_key_name="ssh_key_name",
+            ssh_key_name="my_key",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -252,6 +259,7 @@ class AsyncSshKeysClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         await client.ssh_keys.list()
         """
@@ -295,7 +303,11 @@ class AsyncSshKeysClient:
         self, *, name: str, public_key: str, request_options: typing.Optional[RequestOptions] = None
     ) -> SshKeyResponse:
         """
-        Create a new SSH Key for the authenticated user. A unique name must be provided for the SSH key and a public key. The public key must be a valid SSH key with supported formats ssh-rsa, ssh-dss (DSA), ssh-ed25519 and ecdsa keys with NIST curves.
+        Create a new SSH key for the authenticated user.
+
+        You must provide a unique name for the SSH key, along with a public key. The public key you provide will be duplicated on your FluidStack account for use as as an SSH key.
+
+        <Note>Supported public key formats: ssh-rsa, ssh-dss (DSA), ssh-ed25519, ecdsa keys with NIST curves</Note>
 
         Parameters
         ----------
@@ -319,6 +331,7 @@ class AsyncSshKeysClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         await client.ssh_keys.create(
             name="name",
@@ -388,9 +401,10 @@ class AsyncSshKeysClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         await client.ssh_keys.delete(
-            ssh_key_name="ssh_key_name",
+            ssh_key_name="my_key",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

@@ -42,6 +42,7 @@ class ConfigurationsClient:
 
         client = FluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         client.configurations.list()
         """
@@ -108,6 +109,7 @@ class AsyncConfigurationsClient:
 
         client = AsyncFluidStack(
             api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
         )
         await client.configurations.list()
         """

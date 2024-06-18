@@ -5,18 +5,43 @@ import typing
 
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .entity_id import EntityId
+from .gpu_model_response import GpuModelResponse
 
 
-class SshKeyResponse(pydantic_v1.BaseModel):
-    name: str = pydantic_v1.Field()
+class ConfigurationInstanceResponse(pydantic_v1.BaseModel):
+    id: EntityId
+    gpu_model: typing.Optional[GpuModelResponse] = pydantic_v1.Field(default=None)
     """
-    The name of the SSH key.
+    The GPU model of the configuration
     """
 
-    public_key: typing.Optional[str] = pydantic_v1.Field(default=None)
+    cpu_model: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    The public key.
+    The CPU model of the configuration.
     """
+
+    gpu_count: int = pydantic_v1.Field()
+    """
+    The number of GPUs in the configuration.
+    """
+
+    cpu_count: int = pydantic_v1.Field()
+    """
+    The number of CPUs in the configuration.
+    """
+
+    nvme_storage_size_gb: int = pydantic_v1.Field()
+    """
+    The size of NVMe in the configuration.
+    """
+
+    memory_size_gb: float = pydantic_v1.Field()
+    """
+    The amount of RAM memory in the configuration.
+    """
+
+    estimated_provisioning_time_minutes: typing.Optional[int] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

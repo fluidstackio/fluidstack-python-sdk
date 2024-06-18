@@ -5,7 +5,7 @@ import typing
 
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .configuration_response import ConfigurationResponse
+from .configuration_instance_response import ConfigurationInstanceResponse
 from .instance_status import InstanceStatus
 
 
@@ -22,7 +22,9 @@ class ListInstanceResponse(pydantic_v1.BaseModel):
 
     username: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    The username to be used to connect to the instance. For instance, to connect to the instance via SSH use; "ssh <username>@<ip_address> -p <ssh_port>".
+    The username used to connect to the instance
+    
+    For example, to connect to the instance via SSH, use; "ssh <username>@<ip_address> -p <ssh_port>".
     """
 
     ssh_port: typing.Optional[str] = pydantic_v1.Field(default=None)
@@ -50,7 +52,7 @@ class ListInstanceResponse(pydantic_v1.BaseModel):
     The current hourly price of the instance per processor based on its current status.
     """
 
-    configuration: typing.Optional[ConfigurationResponse] = pydantic_v1.Field(default=None)
+    configuration: typing.Optional[ConfigurationInstanceResponse] = pydantic_v1.Field(default=None)
     """
     The configuration used to create the instance.
     """

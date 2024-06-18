@@ -7,7 +7,6 @@ import httpx
 
 from .configurations.client import AsyncConfigurationsClient, ConfigurationsClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from .environment import FluidStackEnvironment
 from .instances.client import AsyncInstancesClient, InstancesClient
 from .ssh_keys.client import AsyncSshKeysClient, SshKeysClient
 from .templates.client import AsyncTemplatesClient, TemplatesClient
@@ -19,17 +18,8 @@ class FluidStack:
 
     Parameters
     ----------
-    base_url : typing.Optional[str]
+    base_url : str
         The base url to use for requests from the client.
-
-    environment : FluidStackEnvironment
-        The environment to use for requests from the client. from .environment import FluidStackEnvironment
-
-
-
-        Defaults to FluidStackEnvironment.DEFAULT
-
-
 
     api_key : typing.Optional[str]
     timeout : typing.Optional[float]
@@ -47,14 +37,14 @@ class FluidStack:
 
     client = FluidStack(
         api_key="YOUR_API_KEY",
+        base_url="https://yourhost.com/path/to/api",
     )
     """
 
     def __init__(
         self,
         *,
-        base_url: typing.Optional[str] = None,
-        environment: FluidStackEnvironment = FluidStackEnvironment.DEFAULT,
+        base_url: str,
         api_key: typing.Optional[str] = os.getenv("FLUIDSTACK_API_KEY"),
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -62,7 +52,7 @@ class FluidStack:
     ):
         _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         self._client_wrapper = SyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
+            base_url=base_url,
             api_key=api_key,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -83,17 +73,8 @@ class AsyncFluidStack:
 
     Parameters
     ----------
-    base_url : typing.Optional[str]
+    base_url : str
         The base url to use for requests from the client.
-
-    environment : FluidStackEnvironment
-        The environment to use for requests from the client. from .environment import FluidStackEnvironment
-
-
-
-        Defaults to FluidStackEnvironment.DEFAULT
-
-
 
     api_key : typing.Optional[str]
     timeout : typing.Optional[float]
@@ -111,14 +92,14 @@ class AsyncFluidStack:
 
     client = AsyncFluidStack(
         api_key="YOUR_API_KEY",
+        base_url="https://yourhost.com/path/to/api",
     )
     """
 
     def __init__(
         self,
         *,
-        base_url: typing.Optional[str] = None,
-        environment: FluidStackEnvironment = FluidStackEnvironment.DEFAULT,
+        base_url: str,
         api_key: typing.Optional[str] = os.getenv("FLUIDSTACK_API_KEY"),
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -126,7 +107,7 @@ class AsyncFluidStack:
     ):
         _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         self._client_wrapper = AsyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
+            base_url=base_url,
             api_key=api_key,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -139,12 +120,3 @@ class AsyncFluidStack:
         self.ssh_keys = AsyncSshKeysClient(client_wrapper=self._client_wrapper)
         self.configurations = AsyncConfigurationsClient(client_wrapper=self._client_wrapper)
         self.templates = AsyncTemplatesClient(client_wrapper=self._client_wrapper)
-
-
-def _get_base_url(*, base_url: typing.Optional[str] = None, environment: FluidStackEnvironment) -> str:
-    if base_url is not None:
-        return base_url
-    elif environment is not None:
-        return environment.value
-    else:
-        raise Exception("Please pass in either base_url or environment to construct the client")
