@@ -3,6 +3,5 @@
 import typing
 
 SupportedOperatingSystem = typing.Union[
-    typing.Literal["ubuntu_22_04_lts", "ubuntu_20_04_lts", "ubuntu_20_04_lts_nvidia", "ubuntu_22_04_lts_nvidia"],
-    typing.Any,
+    typing.Literal["ubuntu_20_04_lts_nvidia", "ubuntu_22_04_lts_nvidia"], typing.Any
 ]

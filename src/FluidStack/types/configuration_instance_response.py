@@ -13,7 +13,7 @@ class ConfigurationInstanceResponse(pydantic_v1.BaseModel):
     id: EntityId
     gpu_model: typing.Optional[GpuModelResponse] = pydantic_v1.Field(default=None)
     """
-    The GPU model of the configuration
+    The GPU model of the configuration.
     """
 
     cpu_model: typing.Optional[str] = pydantic_v1.Field(default=None)

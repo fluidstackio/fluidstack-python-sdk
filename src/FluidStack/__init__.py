@@ -21,6 +21,7 @@ from .types import (
 )
 from .errors import UnauthorizedError, UnprocessableEntityError
 from . import configurations, instances, ssh_keys, templates
+from .environment import FluidStackEnvironment
 from .version import __version__
 
 __all__ = [
@@ -28,6 +29,7 @@ __all__ = [
     "ConfigurationResponse",
     "CreateInstanceResponse",
     "EntityId",
+    "FluidStackEnvironment",
     "GpuModelResponse",
     "GpuType",
     "HealthCheckOutSchema",

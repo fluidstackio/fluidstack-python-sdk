@@ -15,7 +15,7 @@ class GpuModelResponse(pydantic_v1.BaseModel):
 
     memory_size_gb: typing.Optional[int] = pydantic_v1.Field(default=None)
     """
-    Memory capacity of the GPU in megabytes.
+    Memory capacity of the GPU in gigabytes.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

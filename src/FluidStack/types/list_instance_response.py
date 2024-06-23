@@ -22,19 +22,17 @@ class ListInstanceResponse(pydantic_v1.BaseModel):
 
     username: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    The username used to connect to the instance
-    
-    For example, to connect to the instance via SSH, use; "ssh <username>@<ip_address> -p <ssh_port>".
+    The username used to connect to the instance. For example, to connect to the instance via SSH, use: "ssh -i <path/to/private/key> <username>@<ip_address>".
     """
 
     ssh_port: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    The SSH port to be used to connect to the instance.
+    The SSH port used to connect to the instance.
     """
 
     ssh_keys: typing.Optional[typing.List[str]] = pydantic_v1.Field(default=None)
     """
-    This is the list of the SSH keys of the instance with which you can login.
+    The names of the SSH keys used to login to the instance.
     """
 
     ip_address: typing.Optional[str] = pydantic_v1.Field(default=None)

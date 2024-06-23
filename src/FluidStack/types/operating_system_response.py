@@ -16,7 +16,7 @@ class OperatingSystemResponse(pydantic_v1.BaseModel):
 
     description: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    The description of the operating system detailing the list of pre-installed packages and customisations, if any.
+    The description of the operating system, detailing the pre-installed packages and customisations, if any.
     """
 
     label: SupportedOperatingSystem = pydantic_v1.Field()
