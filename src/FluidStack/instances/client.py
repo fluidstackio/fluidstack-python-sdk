@@ -69,9 +69,9 @@ class InstancesClient:
     def create(
         self,
         *,
-        name: str,
         gpu_type: GpuType,
         ssh_key: str,
+        name: typing.Optional[str] = OMIT,
         gpu_count: typing.Optional[int] = OMIT,
         operating_system_label: typing.Optional[SupportedOperatingSystem] = OMIT,
         region: typing.Optional[Region] = OMIT,
@@ -84,14 +84,14 @@ class InstancesClient:
 
         Parameters
         ----------
-        name : str
-            The custom name of the instance.
-
         gpu_type : GpuType
             The GPU type of the instance.
 
         ssh_key : str
             The SSH key name to add to the instance. This SSH key is used to connect to the instance.
+
+        name : typing.Optional[str]
+            The custom name of the instance.
 
         gpu_count : typing.Optional[int]
             The number of GPUs to attach to the instance.
@@ -337,9 +337,9 @@ class AsyncInstancesClient:
     async def create(
         self,
         *,
-        name: str,
         gpu_type: GpuType,
         ssh_key: str,
+        name: typing.Optional[str] = OMIT,
         gpu_count: typing.Optional[int] = OMIT,
         operating_system_label: typing.Optional[SupportedOperatingSystem] = OMIT,
         region: typing.Optional[Region] = OMIT,
@@ -352,14 +352,14 @@ class AsyncInstancesClient:
 
         Parameters
         ----------
-        name : str
-            The custom name of the instance.
-
         gpu_type : GpuType
             The GPU type of the instance.
 
         ssh_key : str
             The SSH key name to add to the instance. This SSH key is used to connect to the instance.
+
+        name : typing.Optional[str]
+            The custom name of the instance.
 
         gpu_count : typing.Optional[int]
             The number of GPUs to attach to the instance.
