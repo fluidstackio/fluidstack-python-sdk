@@ -2,6 +2,4 @@
 
 import typing
 
-InstanceStatus = typing.Union[
-    typing.Literal["running", "pending", "unhealthy", "shutting_down", "terminated", "stopping", "stopped"], typing.Any
-]
+InstanceStatus = typing.Union[typing.Literal["running", "pending", "unhealthy", "terminated", "stopped"], typing.Any]

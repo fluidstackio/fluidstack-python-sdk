@@ -8,6 +8,7 @@ from .gpu_model_response import GpuModelResponse
 from .gpu_type import GpuType
 from .health_check_out_schema import HealthCheckOutSchema
 from .http_validation_error import HttpValidationError
+from .instance_response import InstanceResponse
 from .instance_status import InstanceStatus
 from .list_instance_response import ListInstanceResponse
 from .message import Message
@@ -27,6 +28,7 @@ __all__ = [
     "GpuType",
     "HealthCheckOutSchema",
     "HttpValidationError",
+    "InstanceResponse",
     "InstanceStatus",
     "ListInstanceResponse",
     "Message",

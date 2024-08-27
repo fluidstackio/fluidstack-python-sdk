@@ -13,6 +13,7 @@ from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.create_instance_response import CreateInstanceResponse
 from ..types.gpu_type import GpuType
 from ..types.http_validation_error import HttpValidationError
+from ..types.instance_response import InstanceResponse
 from ..types.list_instance_response import ListInstanceResponse
 from ..types.message import Message
 from ..types.region import Region
@@ -152,6 +153,94 @@ class InstancesClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def get(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> InstanceResponse:
+        """
+        This endpoint is used to retrieve a single instance associated with the authenticated user by its ID.
+
+        Parameters
+        ----------
+        instance_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstanceResponse
+            Successful Response
+
+        Examples
+        --------
+        from FluidStack.client import FluidStack
+
+        client = FluidStack(
+            api_key="YOUR_API_KEY",
+        )
+        client.instances.get(
+            instance_id="{instance_id}",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"instances/{jsonable_encoder(instance_id)}", method="GET", request_options=request_options
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return pydantic_v1.parse_obj_as(InstanceResponse, _response.json())  # type: ignore
+            if _response.status_code == 401:
+                raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> typing.Any:
+        """
+        This endpoint is used to terminate an existing instance by its ID.
+
+        Parameters
+        ----------
+        instance_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Any
+            Successful Response
+
+        Examples
+        --------
+        from FluidStack.client import FluidStack
+
+        client = FluidStack(
+            api_key="YOUR_API_KEY",
+        )
+        client.instances.delete(
+            instance_id="{instance_id}",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"instances/{jsonable_encoder(instance_id)}", method="DELETE", request_options=request_options
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return pydantic_v1.parse_obj_as(typing.Any, _response.json())  # type: ignore
+            if _response.status_code == 401:
+                raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     def stop(
         self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> ListInstanceResponse:
@@ -233,49 +322,6 @@ class InstancesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return pydantic_v1.parse_obj_as(ListInstanceResponse, _response.json())  # type: ignore
-            if _response.status_code == 401:
-                raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        This endpoint is used to terminate an existing instance by its ID.
-
-        Parameters
-        ----------
-        instance_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from FluidStack.client import FluidStack
-
-        client = FluidStack(
-            api_key="YOUR_API_KEY",
-        )
-        client.instances.delete(
-            instance_id="{instance_id}",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"instances/{jsonable_encoder(instance_id)}", method="DELETE", request_options=request_options
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
             if _response.status_code == 401:
                 raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
             if _response.status_code == 422:
@@ -420,6 +466,96 @@ class AsyncInstancesClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    async def get(
+        self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> InstanceResponse:
+        """
+        This endpoint is used to retrieve a single instance associated with the authenticated user by its ID.
+
+        Parameters
+        ----------
+        instance_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstanceResponse
+            Successful Response
+
+        Examples
+        --------
+        from FluidStack.client import AsyncFluidStack
+
+        client = AsyncFluidStack(
+            api_key="YOUR_API_KEY",
+        )
+        await client.instances.get(
+            instance_id="{instance_id}",
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"instances/{jsonable_encoder(instance_id)}", method="GET", request_options=request_options
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return pydantic_v1.parse_obj_as(InstanceResponse, _response.json())  # type: ignore
+            if _response.status_code == 401:
+                raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> typing.Any:
+        """
+        This endpoint is used to terminate an existing instance by its ID.
+
+        Parameters
+        ----------
+        instance_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Any
+            Successful Response
+
+        Examples
+        --------
+        from FluidStack.client import AsyncFluidStack
+
+        client = AsyncFluidStack(
+            api_key="YOUR_API_KEY",
+        )
+        await client.instances.delete(
+            instance_id="{instance_id}",
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"instances/{jsonable_encoder(instance_id)}", method="DELETE", request_options=request_options
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return pydantic_v1.parse_obj_as(typing.Any, _response.json())  # type: ignore
+            if _response.status_code == 401:
+                raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     async def stop(
         self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> ListInstanceResponse:
@@ -501,49 +637,6 @@ class AsyncInstancesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return pydantic_v1.parse_obj_as(ListInstanceResponse, _response.json())  # type: ignore
-            if _response.status_code == 401:
-                raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    pydantic_v1.parse_obj_as(HttpValidationError, _response.json())  # type: ignore
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def delete(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        This endpoint is used to terminate an existing instance by its ID.
-
-        Parameters
-        ----------
-        instance_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from FluidStack.client import AsyncFluidStack
-
-        client = AsyncFluidStack(
-            api_key="YOUR_API_KEY",
-        )
-        await client.instances.delete(
-            instance_id="{instance_id}",
-        )
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"instances/{jsonable_encoder(instance_id)}", method="DELETE", request_options=request_options
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
             if _response.status_code == 401:
                 raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
             if _response.status_code == 422:

@@ -6,6 +6,7 @@ import typing
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .gpu_type import GpuType
+from .region import Region
 
 
 class ConfigurationResponse(pydantic_v1.BaseModel):
@@ -25,6 +26,10 @@ class ConfigurationResponse(pydantic_v1.BaseModel):
     """
 
     estimated_provisioning_time_minutes: typing.Optional[int] = None
+    regions: typing.List[Region] = pydantic_v1.Field()
+    """
+    The regions the configuration is available in.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

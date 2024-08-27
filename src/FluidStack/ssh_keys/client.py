@@ -119,7 +119,7 @@ class SshKeysClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, ssh_key_name: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def delete(self, ssh_key_name: str, *, request_options: typing.Optional[RequestOptions] = None) -> typing.Any:
         """
         Delete an existing SSH key by its name.
 
@@ -132,7 +132,8 @@ class SshKeysClient:
 
         Returns
         -------
-        None
+        typing.Any
+            Successful Response
 
         Examples
         --------
@@ -150,7 +151,7 @@ class SshKeysClient:
         )
         try:
             if 200 <= _response.status_code < 300:
-                return
+                return pydantic_v1.parse_obj_as(typing.Any, _response.json())  # type: ignore
             if _response.status_code == 401:
                 raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
             if _response.status_code == 422:
@@ -266,7 +267,7 @@ class AsyncSshKeysClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, ssh_key_name: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def delete(self, ssh_key_name: str, *, request_options: typing.Optional[RequestOptions] = None) -> typing.Any:
         """
         Delete an existing SSH key by its name.
 
@@ -279,7 +280,8 @@ class AsyncSshKeysClient:
 
         Returns
         -------
-        None
+        typing.Any
+            Successful Response
 
         Examples
         --------
@@ -297,7 +299,7 @@ class AsyncSshKeysClient:
         )
         try:
             if 200 <= _response.status_code < 300:
-                return
+                return pydantic_v1.parse_obj_as(typing.Any, _response.json())  # type: ignore
             if _response.status_code == 401:
                 raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
             if _response.status_code == 422:
