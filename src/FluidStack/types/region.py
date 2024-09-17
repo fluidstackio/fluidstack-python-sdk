@@ -2,4 +2,23 @@
 
 import typing
 
-Region = typing.Union[typing.Literal["NORWAY", "CANADA", "SWEDEN", "NETHERLANDS"], typing.Any]
+Region = typing.Union[
+    typing.Literal[
+        "NORWAY",
+        "CANADA",
+        "SWEDEN",
+        "NETHERLANDS",
+        "TEXAS_USA",
+        "CALIFORNIA_USA",
+        "ARIZONA_USA",
+        "VIRGINIA_USA",
+        "ILLINOIS_USA",
+        "JAPAN",
+        "UTAH_USA",
+        "WASHINGTON_USA",
+        "GERMANY",
+        "INDIA",
+        "ISRAEL",
+    ],
+    typing.Any,
+]

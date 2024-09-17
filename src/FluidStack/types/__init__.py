@@ -18,6 +18,9 @@ from .ssh_key_response import SshKeyResponse
 from .supported_operating_system import SupportedOperatingSystem
 from .validation_error import ValidationError
 from .validation_error_loc_item import ValidationErrorLocItem
+from .volume_instance_response import VolumeInstanceResponse
+from .volume_instance_response_input_cost_gb_hr import VolumeInstanceResponseInputCostGbHr
+from .volume_status import VolumeStatus
 
 __all__ = [
     "ConfigurationInstanceResponse",
@@ -38,4 +41,7 @@ __all__ = [
     "SupportedOperatingSystem",
     "ValidationError",
     "ValidationErrorLocItem",
+    "VolumeInstanceResponse",
+    "VolumeInstanceResponseInputCostGbHr",
+    "VolumeStatus",
 ]

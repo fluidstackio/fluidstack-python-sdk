@@ -18,6 +18,7 @@ from ..types.list_instance_response import ListInstanceResponse
 from ..types.message import Message
 from ..types.region import Region
 from ..types.supported_operating_system import SupportedOperatingSystem
+from ..types.volume_instance_response import VolumeInstanceResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -76,6 +77,7 @@ class InstancesClient:
         gpu_count: typing.Optional[int] = OMIT,
         operating_system_label: typing.Optional[SupportedOperatingSystem] = OMIT,
         region: typing.Optional[Region] = OMIT,
+        volumes: typing.Optional[typing.Sequence[VolumeInstanceResponse]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateInstanceResponse:
         """
@@ -102,6 +104,9 @@ class InstancesClient:
 
         region : typing.Optional[Region]
             The region in which to create the instance.
+
+        volumes : typing.Optional[typing.Sequence[VolumeInstanceResponse]]
+            The volumes attached to the instance.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -135,6 +140,7 @@ class InstancesClient:
                 "ssh_key": ssh_key,
                 "operating_system_label": operating_system_label,
                 "region": region,
+                "volumes": volumes,
             },
             request_options=request_options,
             omit=OMIT,
@@ -389,6 +395,7 @@ class AsyncInstancesClient:
         gpu_count: typing.Optional[int] = OMIT,
         operating_system_label: typing.Optional[SupportedOperatingSystem] = OMIT,
         region: typing.Optional[Region] = OMIT,
+        volumes: typing.Optional[typing.Sequence[VolumeInstanceResponse]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateInstanceResponse:
         """
@@ -415,6 +422,9 @@ class AsyncInstancesClient:
 
         region : typing.Optional[Region]
             The region in which to create the instance.
+
+        volumes : typing.Optional[typing.Sequence[VolumeInstanceResponse]]
+            The volumes attached to the instance.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -448,6 +458,7 @@ class AsyncInstancesClient:
                 "ssh_key": ssh_key,
                 "operating_system_label": operating_system_label,
                 "region": region,
+                "volumes": volumes,
             },
             request_options=request_options,
             omit=OMIT,

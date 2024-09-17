@@ -7,6 +7,7 @@ from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .configuration_instance_response import ConfigurationInstanceResponse
 from .instance_status import InstanceStatus
+from .volume_instance_response import VolumeInstanceResponse
 
 
 class InstanceResponse(pydantic_v1.BaseModel):
@@ -45,7 +46,7 @@ class InstanceResponse(pydantic_v1.BaseModel):
     The name provided when the instance was created.
     """
 
-    current_rate: typing.Optional[float] = pydantic_v1.Field(default=None)
+    current_gpu_hr_cost: typing.Optional[float] = pydantic_v1.Field(default=None)
     """
     The current hourly price of the instance per processor based on its current status.
     """
@@ -58,6 +59,11 @@ class InstanceResponse(pydantic_v1.BaseModel):
     created_at: typing.Optional[dt.datetime] = pydantic_v1.Field(default=None)
     """
     The creation date and time of the instance.
+    """
+
+    volumes: typing.Optional[typing.List[VolumeInstanceResponse]] = pydantic_v1.Field(default=None)
+    """
+    The volumes attached to the instance.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

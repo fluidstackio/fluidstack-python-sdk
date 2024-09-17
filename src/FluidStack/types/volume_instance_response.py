@@ -6,44 +6,44 @@ import typing
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .entity_id import EntityId
-from .gpu_model_response import GpuModelResponse
-from .region import Region
+from .volume_status import VolumeStatus
 
 
-class ConfigurationInstanceResponse(pydantic_v1.BaseModel):
-    id: EntityId
-    gpu_model: typing.Optional[GpuModelResponse] = pydantic_v1.Field(default=None)
+class VolumeInstanceResponse(pydantic_v1.BaseModel):
+    id: EntityId = pydantic_v1.Field()
     """
-    The GPU model of the configuration.
-    """
-
-    cpu_model: typing.Optional[str] = pydantic_v1.Field(default=None)
-    """
-    The CPU model of the configuration.
+    The ID of the volume.
     """
 
-    gpu_count: int = pydantic_v1.Field()
+    name: str = pydantic_v1.Field()
     """
-    The number of GPUs in the configuration.
-    """
-
-    cpu_count: int = pydantic_v1.Field()
-    """
-    The number of CPUs in the configuration.
+    The name of the volume.
     """
 
-    nvme_storage_size_gb: int = pydantic_v1.Field()
+    size_gb: int = pydantic_v1.Field()
     """
-    The size of NVMe in the configuration.
-    """
-
-    memory_size_gb: float = pydantic_v1.Field()
-    """
-    The amount of RAM memory in the configuration.
+    The size of the volume in GB.
     """
 
-    estimated_provisioning_time_minutes: typing.Optional[int] = None
-    region: Region
+    status: typing.Optional[VolumeStatus] = pydantic_v1.Field(default=None)
+    """
+    The status of the volume.
+    """
+
+    cost_gb_hr: str = pydantic_v1.Field()
+    """
+    The current hourly rate of the volume.
+    """
+
+    created_at: typing.Optional[dt.datetime] = pydantic_v1.Field(default=None)
+    """
+    The creation time of the volume.
+    """
+
+    updated_at: typing.Optional[dt.datetime] = pydantic_v1.Field(default=None)
+    """
+    The update time of the volume.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

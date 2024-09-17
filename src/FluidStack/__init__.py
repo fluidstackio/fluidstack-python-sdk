@@ -19,6 +19,9 @@ from .types import (
     SupportedOperatingSystem,
     ValidationError,
     ValidationErrorLocItem,
+    VolumeInstanceResponse,
+    VolumeInstanceResponseInputCostGbHr,
+    VolumeStatus,
 )
 from .errors import UnauthorizedError, UnprocessableEntityError
 from . import configurations, instances, ssh_keys, templates
@@ -47,6 +50,9 @@ __all__ = [
     "UnprocessableEntityError",
     "ValidationError",
     "ValidationErrorLocItem",
+    "VolumeInstanceResponse",
+    "VolumeInstanceResponseInputCostGbHr",
+    "VolumeStatus",
     "__version__",
     "configurations",
     "instances",
