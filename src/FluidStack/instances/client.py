@@ -10,7 +10,6 @@ from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.create_instance_response import CreateInstanceResponse
 from ..types.gpu_type import GpuType
 from ..types.http_validation_error import HttpValidationError
 from ..types.instance_response import InstanceResponse
@@ -28,12 +27,16 @@ class InstancesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[ListInstanceResponse]:
+    def list(
+        self, *, page: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.List[ListInstanceResponse]:
         """
         This endpoint is used to retrieve a list of all instances associated with the authenticated user.
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -52,7 +55,7 @@ class InstancesClient:
         client.instances.list()
         """
         _response = self._client_wrapper.httpx_client.request(
-            "instances", method="GET", request_options=request_options
+            "instances", method="GET", params={"page": page}, request_options=request_options
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -79,7 +82,7 @@ class InstancesClient:
         region: typing.Optional[Region] = OMIT,
         volumes: typing.Optional[typing.Sequence[VolumeInstanceResponse]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateInstanceResponse:
+    ) -> None:
         """
         This endpoint is used to create a new instance. You must provide a custom `name` for the instance, its `gpu_type`, and the name of its `ssh_key`.
 
@@ -113,8 +116,7 @@ class InstancesClient:
 
         Returns
         -------
-        CreateInstanceResponse
-            Successful Response
+        None
 
         Examples
         --------
@@ -124,10 +126,8 @@ class InstancesClient:
             api_key="YOUR_API_KEY",
         )
         client.instances.create(
-            name="my_instance_name",
-            gpu_type="RTX_A5000_24GB",
-            ssh_key="my_ssh_key",
-            operating_system_label="ubuntu_20_04_lts_nvidia",
+            gpu_type="RTX_A4000_16GB",
+            ssh_key="ssh_key",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -147,7 +147,7 @@ class InstancesClient:
         )
         try:
             if 200 <= _response.status_code < 300:
-                return pydantic_v1.parse_obj_as(CreateInstanceResponse, _response.json())  # type: ignore
+                return
             if _response.status_code == 401:
                 raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
             if _response.status_code == 422:
@@ -162,6 +162,7 @@ class InstancesClient:
     def get(self, instance_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> InstanceResponse:
         """
         This endpoint is used to retrieve a single instance associated with the authenticated user by its ID.
+        This endpoint returns HTTP 202 Accepted code if the instance is still pending. Otherwise, it returns HTTP 200 OK code.
 
         Parameters
         ----------
@@ -345,13 +346,15 @@ class AsyncInstancesClient:
         self._client_wrapper = client_wrapper
 
     async def list(
-        self, *, request_options: typing.Optional[RequestOptions] = None
+        self, *, page: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> typing.List[ListInstanceResponse]:
         """
         This endpoint is used to retrieve a list of all instances associated with the authenticated user.
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -370,7 +373,7 @@ class AsyncInstancesClient:
         await client.instances.list()
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "instances", method="GET", request_options=request_options
+            "instances", method="GET", params={"page": page}, request_options=request_options
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -397,7 +400,7 @@ class AsyncInstancesClient:
         region: typing.Optional[Region] = OMIT,
         volumes: typing.Optional[typing.Sequence[VolumeInstanceResponse]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateInstanceResponse:
+    ) -> None:
         """
         This endpoint is used to create a new instance. You must provide a custom `name` for the instance, its `gpu_type`, and the name of its `ssh_key`.
 
@@ -431,8 +434,7 @@ class AsyncInstancesClient:
 
         Returns
         -------
-        CreateInstanceResponse
-            Successful Response
+        None
 
         Examples
         --------
@@ -442,10 +444,8 @@ class AsyncInstancesClient:
             api_key="YOUR_API_KEY",
         )
         await client.instances.create(
-            name="my_instance_name",
-            gpu_type="RTX_A5000_24GB",
-            ssh_key="my_ssh_key",
-            operating_system_label="ubuntu_20_04_lts_nvidia",
+            gpu_type="RTX_A4000_16GB",
+            ssh_key="ssh_key",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -465,7 +465,7 @@ class AsyncInstancesClient:
         )
         try:
             if 200 <= _response.status_code < 300:
-                return pydantic_v1.parse_obj_as(CreateInstanceResponse, _response.json())  # type: ignore
+                return
             if _response.status_code == 401:
                 raise UnauthorizedError(pydantic_v1.parse_obj_as(Message, _response.json()))  # type: ignore
             if _response.status_code == 422:
@@ -482,6 +482,7 @@ class AsyncInstancesClient:
     ) -> InstanceResponse:
         """
         This endpoint is used to retrieve a single instance associated with the authenticated user by its ID.
+        This endpoint returns HTTP 202 Accepted code if the instance is still pending. Otherwise, it returns HTTP 200 OK code.
 
         Parameters
         ----------

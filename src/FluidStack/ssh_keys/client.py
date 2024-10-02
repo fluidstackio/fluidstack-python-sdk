@@ -22,12 +22,17 @@ class SshKeysClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[SshKeyResponse]:
+    def list(
+        self, *, show_all: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.List[SshKeyResponse]:
         """
         Fetch a list of SSH key names associated with the authenticated user.
 
         Parameters
         ----------
+        show_all : typing.Optional[bool]
+            Show all SSH keys
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -45,7 +50,9 @@ class SshKeysClient:
         )
         client.ssh_keys.list()
         """
-        _response = self._client_wrapper.httpx_client.request("ssh_keys", method="GET", request_options=request_options)
+        _response = self._client_wrapper.httpx_client.request(
+            "ssh_keys", method="GET", params={"show_all": show_all}, request_options=request_options
+        )
         try:
             if 200 <= _response.status_code < 300:
                 return pydantic_v1.parse_obj_as(typing.List[SshKeyResponse], _response.json())  # type: ignore
@@ -168,12 +175,17 @@ class AsyncSshKeysClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.List[SshKeyResponse]:
+    async def list(
+        self, *, show_all: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.List[SshKeyResponse]:
         """
         Fetch a list of SSH key names associated with the authenticated user.
 
         Parameters
         ----------
+        show_all : typing.Optional[bool]
+            Show all SSH keys
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -192,7 +204,7 @@ class AsyncSshKeysClient:
         await client.ssh_keys.list()
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "ssh_keys", method="GET", request_options=request_options
+            "ssh_keys", method="GET", params={"show_all": show_all}, request_options=request_options
         )
         try:
             if 200 <= _response.status_code < 300:
